@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan José Cáceres Huezo | Creative Technology Portfolio</title>
+    <meta name="description" content="Juan José Cáceres Huezo is a high school student exploring creative technology through practical digital projects.">
+    <meta name="theme-color" content="#2F4F43">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Light mode palette */
+            --bg-parchment: #F4F1EA;
+            --bg-card: #FFFFFF;
+            --bg-card-subtle: #FAF8F5;
+            --leaf-deep: #2F4F43;
+            --leaf-sage: #4A6B5D;
+            --leaf-light: #E2ECE8;
+            --amber-accent: #D97706;
+            --amber-hover: #B45309;
+            --text-main: #1E2229;
+            --text-muted: #555E6C;
+            --border-subtle: #D8D3C5;
+            --shadow-3d: 0 15px 35px -5px rgba(47, 79, 67, 0.15), 0 5px 15px -5px rgba(0, 0, 0, 0.05);
+            --terminal-bg: #1A211D;
+            --terminal-header: #121815;
+            --terminal-text: #2EE59D;
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode palette */
+            --bg-parchment: #0F1714;
+            --bg-card: #18231E;
+            --bg-card-subtle: #1F2E28;
+            --leaf-deep: #2EE59D;
+            --leaf-sage: #4ade80;
+            --leaf-light: #1A2E26;
+            --amber-accent: #F59E0B;
+            --amber-hover: #D97706;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --border-subtle: #293B33;
+            --shadow-3d: 0 15px 35px -5px rgba(0, 0, 0, 0.5), 0 5px 15px -5px rgba(46, 229, 157, 0.1);
+            --terminal-bg: #090E0C;
+            --terminal-header: #050807;
+            --terminal-text: #2EE59D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: auto;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-parchment);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* --- CURSOR PERSONALIZADO --- */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease-out, width 0.2s, height 0.2s, background-image 0.2s;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234A6B5D'%3E%3Cpath d='M12 2L4 12l8 10 8-10z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+
+        [data-theme="dark"] #custom-cursor {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232EE59D'%3E%3Cpath d='M12 2L4 12l8 10 8-10z'/%3E%3C/svg%3E");
+        }
+
+        body.hovering #custom-cursor {
+            width: 32px;
+            height: 32px;
+            transform: translate(-50%, -50%) rotate(45deg);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F59E0B'%3E%3Cpath d='M12 0l3.09 6.26L22 7.27l-5 4.87 1.18 6.88L12 15.77l-6.18 3.25L7 12.14 2 7.27l6.91-1.01L12 0z'/%3E%3C/svg%3E");
+        }
+
+        /* --- CANVAS HOJAS FLOTANTES --- */
+        #leaf-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.9;
+        }
+
+        /* --- NAVBAR & SCROLLSPY --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(244, 241, 234, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        [data-theme="dark"] header {
+            background-color: rgba(15, 23, 20, 0.92);
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.1rem 2rem;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--leaf-deep);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--leaf-deep);
+            color: var(--bg-parchment);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: background-color 0.4s ease;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-subtle);
+            color: var(--text-main);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.25rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.92rem;
+            padding: 0.4rem 0.85rem;
+            border-radius: 20px;
+            transition: all 0.25s ease;
+        }
+
+        .nav-links a.active, .nav-links a:hover {
+            color: #FFFFFF;
+            background-color: var(--leaf-sage);
+        }
+
+        [data-theme="dark"] .nav-links a.active, [data-theme="dark"] .nav-links a:hover {
+            color: #0F1714;
+            background-color: var(--leaf-deep);
+            font-weight: 700;
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-subtle);
+            color: var(--text-main);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--amber-accent);
+            color: var(--amber-accent);
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 7rem 2rem 4rem 2rem;
+        }
+
+        section {
+            padding: 4.5rem 0;
+            border-bottom: 1px dashed var(--border-subtle);
+            scroll-margin-top: 5rem;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--leaf-deep);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.25rem;
+        }
+
+        .section-tag {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--amber-accent);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            min-height: 75vh;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .badge-student {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.45rem 1.1rem;
+            background-color: var(--leaf-light);
+            color: var(--leaf-deep);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+            font-weight: 800;
+        }
+
+        .hero-content h1 span {
+            color: var(--leaf-sage);
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.25rem;
+            line-height: 1.65;
+            max-width: 580px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--leaf-sage);
+            color: #FFFFFF;
+            padding: 0.85rem 1.75rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.25s ease;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .btn {
+            color: #0F1714;
+            background-color: var(--leaf-deep);
+            font-weight: 700;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            opacity: 0.95;
+        }
+
+        .btn-amber {
+            background-color: var(--amber-accent) !important;
+            color: #FFFFFF !important;
+        }
+
+        .btn-amber:hover {
+            background-color: var(--amber-hover) !important;
+        }
+
+        .btn-outline {
+            background-color: transparent !important;
+            color: var(--leaf-deep) !important;
+            border: 2px solid var(--leaf-deep);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--leaf-light) !important;
+        }
+
+        /* 3D TILT PHOTO CARD */
+        .profile-card-3d {
+            perspective: 1000px;
+        }
+
+        .profile-img-container {
+            width: 290px;
+            height: 350px;
+            border-radius: 24px;
+            background: linear-gradient(145deg, var(--bg-card), var(--leaf-light));
+            padding: 12px;
+            box-shadow: var(--shadow-3d);
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.2s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        /* --- ABOUT --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 3rem;
+            align-items: stretch;
+        }
+
+        .about-text {
+            background: var(--bg-card);
+            padding: 2.25rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-3d);
+        }
+
+        .about-text p {
+            margin-bottom: 1.2rem;
+            line-height: 1.75;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        .about-text p strong {
+            color: var(--leaf-deep);
+        }
+
+        .cv-card {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-card-subtle));
+            border: 1.5px solid var(--border-subtle);
+            padding: 2.25rem;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-3d);
+        }
+
+        .cv-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .cv-card p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 1.75rem;
+        }
+
+        .passions-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .pill {
+            background: var(--leaf-light);
+            color: var(--leaf-deep);
+            padding: 0.3rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* --- PROJECTS --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-3d);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-visual {
+            aspect-ratio: 16 / 8.5;
+            overflow: hidden;
+            border-radius: 14px;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--border-subtle);
+            background: var(--leaf-light);
+        }
+
+        .project-visual svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            background-color: var(--leaf-light);
+            color: var(--leaf-deep);
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .problem-solution {
+            background-color: var(--bg-parchment);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--amber-accent);
+        }
+
+        .problem-solution div {
+            margin-bottom: 0.4rem;
+        }
+
+        .problem-solution div:last-child {
+            margin-bottom: 0;
+        }
+
+        .problem-solution strong { color: var(--leaf-deep); }
+
+        .project-links {
+            display: flex;
+            gap: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .project-links a {
+            text-decoration: none;
+            color: var(--leaf-deep);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .project-links span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .project-links a:hover {
+            color: var(--amber-accent);
+        }
+
+        /* --- SKILLS --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            padding: 1.75rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-3d);
+        }
+
+        .skill-category h3 {
+            font-size: 1.15rem;
+            margin-bottom: 1.25rem;
+            color: var(--leaf-deep);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .skill-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .skill-item {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .skill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--amber-accent);
+        }
+
+        /* --- TERMINAL CLI --- */
+        .terminal-container {
+            background: var(--terminal-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .terminal-header {
+            background: var(--terminal-header);
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-red { background: #FF5F56; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #27C93F; }
+
+        .terminal-title { color: #888; font-size: 0.8rem; }
+
+        .terminal-body {
+            padding: 1.5rem;
+            min-height: 220px;
+            max-height: 320px;
+            overflow-y: auto;
+            color: #DDD;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .terminal-output {
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+        }
+
+        .terminal-prompt {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--terminal-text);
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #FFF;
+            font-family: inherit;
+            font-size: 0.9rem;
+            width: 100%;
+            outline: none;
+        }
+
+        /* --- CONTACT --- */
+        .contact-container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 2.75rem;
+            border-radius: 24px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-3d);
+        }
+
+        .contact-intro {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .contact-email {
+            display: block;
+            margin-top: 1.25rem;
+            color: var(--leaf-deep);
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-note {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-top: 1.25rem;
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--leaf-deep);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1.1rem;
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 10px;
+            font-family: inherit;
+            background-color: var(--bg-parchment);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--leaf-sage);
+            background-color: var(--bg-card);
+        }
+
+        .form-note {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.5;
+            margin-top: 1rem;
+        }
+
+        /* --- FOOTER CENTRADO --- */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem 3rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-icons-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .social-icon-btn:hover {
+            transform: translateY(-6px) scale(1.1);
+            background: var(--leaf-deep);
+            border-color: var(--leaf-deep);
+            box-shadow: 0 10px 20px rgba(46, 229, 157, 0.25);
+        }
+
+        .social-icon-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--leaf-deep);
+            transition: fill 0.3s;
+        }
+
+        .social-icon-btn i {
+            color: var(--leaf-deep);
+            font-size: 1.3rem;
+            transition: color 0.3s;
+        }
+
+        .social-icon-btn:hover svg {
+            fill: #0F1714;
+        }
+
+        .social-icon-btn:hover i {
+            color: #0F1714;
+        }
+
+        .social-unavailable {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 868px) {
+            .nav-container { padding: 0.75rem 1rem; }
+            .nav-right { gap: 0.55rem; }
+            .menu-toggle { display: inline-flex; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 0.75rem 1rem 1rem;
+                background: var(--bg-card);
+                border-bottom: 1px solid var(--border-subtle);
+                box-shadow: var(--shadow-3d);
+                flex-direction: column;
+                gap: 0.35rem;
+            }
+            .nav-links.is-open { display: flex; }
+            .nav-links a { display: block; padding: 0.75rem 1rem; }
+            .logo { font-size: 1rem; gap: 0.45rem; min-width: 0; max-width: calc(100% - 100px); }
+            .logo span { overflow-wrap: anywhere; }
+            .logo-icon { width: 30px; height: 30px; flex: 0 0 auto; }
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 2rem;
+                min-height: auto;
+            }
+            .hero-content h1 { font-size: clamp(2rem, 6vw, 2.6rem); }
+            .hero-content p { margin-left: auto; margin-right: auto; }
+            .btn-group { justify-content: center; }
+            .about-grid { grid-template-columns: 1fr; }
+            .profile-img-container { width: min(290px, 78vw); height: auto; aspect-ratio: 29 / 35; }
+            main { padding-left: 1.25rem; padding-right: 1.25rem; }
+        }
+
+        @media (max-width: 560px) {
+            main { padding: 5.5rem 1rem 2.5rem; }
+            section { padding: 3.25rem 0; }
+            .section-header { margin-bottom: 2rem; }
+            .section-title { font-size: clamp(1.7rem, 8vw, 2.1rem); }
+            .badge-student { font-size: 0.75rem; line-height: 1.45; }
+            .hero-content h1 { font-size: clamp(1.85rem, 9vw, 2.4rem); }
+            .hero-content p { font-size: 1rem; }
+            .about-text, .cv-card, .project-card { padding: 1.35rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .project-links { flex-wrap: wrap; }
+            .contact-container { padding: 1.25rem; }
+            .footer-copyright { padding: 0 1rem; line-height: 1.5; }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+            #custom-cursor { display: none; }
+            *, *::before, *::after { cursor: auto !important; }
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            *, *::before, *::after { cursor: none !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CUSTOM CURSOR AND LEAF CANVAS -->
+    <div id="custom-cursor"></div>
+    <canvas id="leaf-canvas"></canvas>
+
+    <!-- HEADER AND NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-leaf"></i></div>
+                <span>Juan José Cáceres Huezo</span>
+            </a>
+            
+            <div class="nav-right">
+                <ul class="nav-links" id="navLinks" aria-label="Main navigation">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
+                <button class="theme-toggle-btn" id="themeToggle" type="button" title="Toggle color theme" aria-label="Toggle color theme">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. INTRODUCTION -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="badge-student">
+                    <i class="fa-solid fa-graduation-cap"></i> Student at ¡SUPÉRATE! ADOC · Technology, English, and personal development
+                </div>
+                <h1>Creative ideas. <span>Useful technology.</span></h1>
+                <p>I’m Juan José Cáceres Huezo, a student who enjoys turning ideas into clear, approachable digital tools. I combine creativity, learning, and technology to explore solutions to everyday needs.</p>
+                <div class="btn-group">
+                    <a href="#projects" class="btn btn-amber"><i class="fa-solid fa-folder-open"></i> Explore projects</a>
+                    <a href="#contact" class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> Get in touch</a>
+                </div>
+            </div>
+
+            <div class="profile-card-3d">
+                <div class="profile-img-container" id="tilt-card">
+                    <img src="yooo.jpeg" alt="Portrait of Juan José Cáceres Huezo">
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT -->
+        <section id="about">
+            <div class="section-header">
+                <span class="section-tag">Profile & Background</span>
+                <h2 class="section-title">About Me</h2>
+            </div>
+            
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>I’m a General High School student and a participant in <strong>¡SUPÉRATE! ADOC</strong>, where I study technology, English, and personal development. I’m interested in technology that helps people: noticing a need, imagining a solution, and shaping it into a clear digital experience.</p>
+                    <p>That curiosity has led me to projects such as <strong>PrimerPaso</strong>, a job-search prototype co-created with a classmate for adults looking for entry-level work, and <strong>TechGuide</strong>, a camera-based tool that recognizes electronic devices. These projects let me combine creativity, collaboration, and hands-on learning.</p>
+                    <p>I’m curious, responsible, detail-oriented, and eager to keep learning. I have also taken part in community volunteer activities. I hope to keep growing in technology and contribute ideas that become useful tools for others.</p>
+                    
+                    <div class="passions-pills">
+                        <span class="pill"><i class="fa-solid fa-lightbulb"></i> Creativity</span>
+                        <span class="pill"><i class="fa-solid fa-code"></i> Technology</span>
+                        <span class="pill"><i class="fa-solid fa-people-group"></i> Collaboration</span>
+                    </div>
+                </div>
+
+                <div class="cv-card">
+                    <div>
+                        <i class="fa-solid fa-award" style="font-size: 2.2rem; color: var(--amber-accent); margin-bottom: 1rem;"></i>
+                        <h3>Education & Certifications</h3>
+                        <p><strong>Microsoft Office Specialist (MOS) Excel and Excel Expert</strong> certifications. Technology, English, and personal development studies at ¡SUPÉRATE! ADOC.</p>
+                        <p><strong>English:</strong> intermediate, continuing to learn.</p>
+                    </div>
+                    <a href="cv-juan-jose.pdf" class="btn btn-amber" download style="width: 100%; justify-content: center;">
+                        <i class="fa-solid fa-download"></i> Download my résumé (PDF)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SELECTED PROJECTS -->
+        <section id="projects">
+            <div class="section-header">
+                <span class="section-tag">Selected Work</span>
+                <h2 class="section-title">Selected Projects</h2>
+            </div>
+
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div>
+                        <div class="project-visual">
+                            <svg viewBox="0 0 800 425" role="img" aria-labelledby="speedy-title speedy-desc" xmlns="http://www.w3.org/2000/svg">
+                                <title id="speedy-title">Original illustration of an online shop</title>
+                                <desc id="speedy-desc">A shopping bag next to a row of product cards.</desc>
+                                <rect width="800" height="425" fill="#E2ECE8"/>
+                                <rect x="34" y="34" width="732" height="357" rx="24" fill="#FAF8F5"/>
+                                <rect x="34" y="34" width="732" height="62" rx="24" fill="#2F4F43"/>
+                                <rect x="34" y="73" width="732" height="23" fill="#2F4F43"/>
+                                <circle cx="72" cy="65" r="9" fill="#F59E0B"/><circle cx="101" cy="65" r="9" fill="#E2ECE8"/><circle cx="130" cy="65" r="9" fill="#4A6B5D"/>
+                                <rect x="66" y="127" width="220" height="222" rx="18" fill="#E2ECE8"/>
+                                <path d="M128 205h96l-11 116h-74z" fill="#D97706"/><path d="M151 205c0-44 50-44 50 0" fill="none" stroke="#2F4F43" stroke-width="13" stroke-linecap="round"/>
+                                <circle cx="175" cy="258" r="24" fill="#FAF8F5"/><path d="M175 240v36m-18-18h36" stroke="#2F4F43" stroke-width="6" stroke-linecap="round"/>
+                                <rect x="322" y="138" width="178" height="198" rx="14" fill="#FFFFFF" stroke="#D8D3C5" stroke-width="3"/>
+                                <rect x="338" y="154" width="146" height="98" rx="9" fill="#E2ECE8"/><circle cx="410" cy="199" r="31" fill="#4A6B5D"/><rect x="338" y="268" width="111" height="12" rx="6" fill="#2F4F43"/><rect x="338" y="291" width="78" height="10" rx="5" fill="#B9C9C1"/>
+                                <rect x="520" y="138" width="178" height="198" rx="14" fill="#FFFFFF" stroke="#D8D3C5" stroke-width="3"/>
+                                <rect x="536" y="154" width="146" height="98" rx="9" fill="#F7E8D1"/><path d="M572 229l36-51 39 51z" fill="#D97706"/><circle cx="609" cy="184" r="13" fill="#2F4F43"/><rect x="536" y="268" width="111" height="12" rx="6" fill="#2F4F43"/><rect x="536" y="291" width="78" height="10" rx="5" fill="#D8D3C5"/>
+                            </svg>
+                        </div>
+                        <span class="project-tag">E-commerce · Academic team project</span>
+                        <h3>SpeedyShop</h3>
+                        <div class="problem-solution">
+                            <div><strong>Challenge:</strong> Create an online-shopping experience as an academic project.</div>
+                            <div><strong>Approach:</strong> Developed a web storefront as part of a student team.</div>
+                            <div><strong>Outcome:</strong> A published website that visitors can explore.</div>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://speedyshop.infinityfreeapp.com/?i=2" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> View live site</a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div>
+                        <div class="project-visual">
+                            <svg viewBox="0 0 800 425" role="img" aria-labelledby="primer-title primer-desc" xmlns="http://www.w3.org/2000/svg">
+                                <title id="primer-title">Original illustration of a job-search dashboard</title>
+                                <desc id="primer-desc">A briefcase beside sample job cards and a résumé checklist.</desc>
+                                <rect width="800" height="425" fill="#F7E8D1"/><rect x="34" y="34" width="732" height="357" rx="24" fill="#FAF8F5"/>
+                                <rect x="34" y="34" width="732" height="62" rx="24" fill="#2F4F43"/><rect x="34" y="73" width="732" height="23" fill="#2F4F43"/>
+                                <circle cx="72" cy="65" r="9" fill="#F59E0B"/><circle cx="101" cy="65" r="9" fill="#E2ECE8"/><circle cx="130" cy="65" r="9" fill="#4A6B5D"/>
+                                <rect x="69" y="137" width="265" height="213" rx="17" fill="#E2ECE8"/>
+                                <rect x="128" y="197" width="150" height="104" rx="15" fill="#4A6B5D"/><path d="M163 197v-23c0-17 80-17 80 0v23" fill="none" stroke="#2F4F43" stroke-width="13"/><path d="M128 224h150m-75-27v30" stroke="#F7E8D1" stroke-width="8"/>
+                                <rect x="376" y="137" width="323" height="87" rx="14" fill="#FFFFFF" stroke="#D8D3C5" stroke-width="3"/><circle cx="417" cy="180" r="21" fill="#F7E8D1"/><rect x="454" y="160" width="181" height="12" rx="6" fill="#2F4F43"/><rect x="454" y="184" width="132" height="10" rx="5" fill="#B9C9C1"/>
+                                <rect x="376" y="242" width="323" height="87" rx="14" fill="#FFFFFF" stroke="#D8D3C5" stroke-width="3"/><circle cx="417" cy="285" r="21" fill="#E2ECE8"/><path d="M407 285l7 7 14-16" fill="none" stroke="#2F4F43" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="454" y="265" width="181" height="12" rx="6" fill="#2F4F43"/><rect x="454" y="289" width="132" height="10" rx="5" fill="#B9C9C1"/>
+                            </svg>
+                        </div>
+                        <span class="project-tag">Collaborative · Entry-level job-search prototype</span>
+                        <h3>PrimerPaso</h3>
+                        <div class="problem-solution">
+                            <div><strong>Challenge:</strong> Help adults over 18 explore entry-level jobs that do not require prior experience.</div>
+                            <div><strong>Approach:</strong> Co-created with a classmate; includes job filters, a résumé builder, and interview practice.</div>
+                            <div><strong>Outcome:</strong> Interactive academic prototype. Listings are examples, and applications are not sent to employers.</div>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://juanjocaceres2026.github.io/PrimerPaso-main/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open demo</a>
+                        <a href="https://github.com/JuanJoCaceres2026/PrimerPaso-main" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> View repository</a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div>
+                        <div class="project-visual">
+                            <svg viewBox="0 0 800 425" role="img" aria-labelledby="tech-title tech-desc" xmlns="http://www.w3.org/2000/svg">
+                                <title id="tech-title">Original illustration of an AI device scanner</title>
+                                <desc id="tech-desc">A camera scans a computer chip and displays a device prediction.</desc>
+                                <rect width="800" height="425" fill="#E2ECE8"/><rect x="34" y="34" width="732" height="357" rx="24" fill="#18231E"/>
+                                <circle cx="300" cy="212" r="148" fill="#1F2E28" stroke="#4A6B5D" stroke-width="5"/><circle cx="300" cy="212" r="105" fill="none" stroke="#D97706" stroke-width="4" stroke-dasharray="12 12"/>
+                                <rect x="226" y="153" width="148" height="118" rx="17" fill="#2F4F43" stroke="#4ade80" stroke-width="4"/><rect x="257" y="181" width="85" height="62" rx="9" fill="#0F1714" stroke="#E2ECE8" stroke-width="3"/><path d="M247 140v-19m106 19v-19m-106 161v19m106-19v19m-143-130h-19m19 106h-19m180-106h19m-19 106h19" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>
+                                <rect x="492" y="108" width="204" height="218" rx="18" fill="#FAF8F5"/><rect x="516" y="132" width="155" height="12" rx="6" fill="#2F4F43"/><text x="516" y="181" fill="#555E6C" font-family="Inter, sans-serif" font-size="16">PREDICTION</text><text x="516" y="211" fill="#1E2229" font-family="Inter, sans-serif" font-size="23" font-weight="700">Electronic device</text><rect x="516" y="238" width="155" height="12" rx="6" fill="#D8D3C5"/><rect x="516" y="238" width="119" height="12" rx="6" fill="#4A6B5D"/><text x="516" y="278" fill="#555E6C" font-family="Inter, sans-serif" font-size="16">MODEL CONFIDENCE</text>
+                            </svg>
+                        </div>
+                        <span class="project-tag">Computer vision · Teachable Machine</span>
+                        <h3>TechGuide</h3>
+                        <div class="problem-solution">
+                            <div><strong>Challenge:</strong> Explore how a camera can help identify electronic equipment.</div>
+                            <div><strong>Approach:</strong> Connected a webcam to a custom image-recognition model built with Teachable Machine.</div>
+                            <div><strong>Outcome:</strong> A real-time prototype that displays the model’s prediction and confidence score.</div>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://juanjocaceres2026.github.io/TechGuide/" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open demo</a>
+                        <a href="https://github.com/JuanJoCaceres2026/TechGuide" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> View code</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 4. SKILLS AND INTERACTIVE TERMINAL -->
+        <section id="skills">
+            <div class="section-header">
+                <span class="section-tag">Skills</span>
+                <h2 class="section-title">Creative & Digital Skills</h2>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fa-solid fa-palette" style="color: var(--amber-accent);"></i> Design & Visual Communication</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item"><span>Visual creativity</span><span class="skill-dot"></span></li>
+                        <li class="skill-item"><span>Canva & digital tools</span><span class="skill-dot"></span></li>
+                        <li class="skill-item"><span>Attention to detail</span><span class="skill-dot"></span></li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fa-solid fa-code" style="color: var(--amber-accent);"></i> Digital & Office Tools</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item"><span>Computer and office tools</span><span class="skill-dot"></span></li>
+                        <li class="skill-item"><span>Microsoft Excel</span><span class="skill-dot"></span></li>
+                        <li class="skill-item"><span>English · Intermediate</span><span class="skill-dot"></span></li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fa-solid fa-certificate" style="color: var(--amber-accent);"></i> Certifications</h3>
+                    <ul class="skill-list">
+                        <li class="skill-item"><span>MOS Excel</span><span class="skill-dot"></span></li>
+                        <li class="skill-item"><span>MOS Excel Expert</span><span class="skill-dot"></span></li>
+                        <li class="skill-item"><span>Spanish · Native</span><span class="skill-dot"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TERMINAL CLI EASTER EGG -->
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <div class="terminal-title">juanjose@superate-adoc-cli:~</div>
+                </div>
+                <div class="terminal-body" id="terminalBody">
+                    <div class="terminal-output">Welcome to the interactive console. Type <span style="color: var(--terminal-text); font-weight:bold;">help</span> to see the available commands.</div>
+                </div>
+                <div style="padding: 0 1.5rem 1rem 1.5rem;">
+                    <div class="terminal-prompt">
+                        <span>jjcaceres@dev:~$</span>
+                        <input type="text" class="terminal-input" id="terminalInput" placeholder="Type a command..." autocomplete="off" aria-label="Interactive console command">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CONTACT -->
+        <section id="contact">
+            <div class="section-header">
+                <span class="section-tag">Contact</span>
+                <h2 class="section-title">Let’s Connect</h2>
+            </div>
+
+            <div class="contact-container">
+                <p class="contact-intro">For questions, project feedback, or opportunities, email me or explore my work on GitHub.</p>
+                <div class="contact-links">
+                    <a href="mailto:juanjoo.caceres.huezo@gmail.com?subject=Portfolio%20inquiry" class="btn btn-amber"><i class="fa-solid fa-envelope"></i> Email Juan José</a>
+                    <a href="https://github.com/JuanJoCaceres2026" target="_blank" rel="noopener noreferrer" class="btn btn-outline"><i class="fa-brands fa-github"></i> GitHub profile</a>
+                </div>
+                <a class="contact-email" href="mailto:juanjoo.caceres.huezo@gmail.com">juanjoo.caceres.huezo@gmail.com</a>
+                <p class="contact-note">The email button opens your email app with a new message. You can send it directly to my inbox.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER AND RESOURCE CREDITS -->
+    <footer>
+        <div class="social-icons-footer">
+            <a href="mailto:juanjoo.caceres.huezo@gmail.com" class="social-icon-btn" title="Email Juan José" aria-label="Email Juan José">
+                <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.408l8.073-5.915C21.691 2.279 24 3.434 24 5.457z"/></svg>
+            </a>
+            <a href="https://github.com/JuanJoCaceres2026" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="GitHub profile" aria-label="GitHub profile">
+                <i class="fa-brands fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/juanjo-caceres7/" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="LinkedIn profile" aria-label="LinkedIn">
+                <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.instagram.com/j_j_oblivion/?hl=es" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Instagram profile" aria-label="Instagram">
+                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+        </div>
+        <p class="footer-copyright">© 2026 Juan José Cáceres Huezo · ¡SUPÉRATE! ADOC</p>
+        <p class="contact-note">Icons: Font Awesome · Typefaces: Google Fonts (Inter and Outfit) · Image model: Teachable Machine</p>
+    </footer>
+
+    <!-- JAVASCRIPT BEHAVIOR -->
+    <script>
+        // 1. Dynamic dark mode
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+            }
+        });
+
+        // 2. Custom cursor
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, .project-card, .skill-category, .profile-img-container');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // 3. CANVAS HOJAS FLOTANTES
+        const canvas = document.getElementById('leaf-canvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const leaves = [];
+        const leafColors = ['#4A6B5D', '#2F4F43', '#3E5C52', '#2EE59D'];
+        for (let i = 0; i < 32; i++) {
+            leaves.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 9 + 10,
+                speedY: Math.random() * 0.8 + 0.5,
+                speedX: Math.random() * 1 - 0.5,
+                rotation: Math.random() * 360,
+                rotSpeed: Math.random() * 1.5 - 0.75,
+                color: leafColors[Math.floor(Math.random() * leafColors.length)],
+                opacity: Math.random() * 0.35 + 0.55
+            });
+        }
+
+        function animateLeaves() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            leaves.forEach(leaf => {
+                leaf.y += leaf.speedY;
+                leaf.x += leaf.speedX + Math.sin(leaf.y * 0.008) * 0.4;
+                leaf.rotation += leaf.rotSpeed;
+
+                if (leaf.y > canvas.height + 20) {
+                    leaf.y = -20;
+                    leaf.x = Math.random() * canvas.width;
+                }
+
+                ctx.save();
+                ctx.translate(leaf.x, leaf.y);
+                ctx.rotate((leaf.rotation * Math.PI) / 180);
+                ctx.fillStyle = leaf.color;
+                ctx.globalAlpha = leaf.opacity;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, leaf.size, leaf.size / 2.2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+            requestAnimationFrame(animateLeaves);
+        }
+        animateLeaves();
+
+        // 4. PERSPECTIVA 3D TILT FOTO DE PERFIL
+        const tiltCard = document.getElementById('tilt-card');
+        const cardParent = document.querySelector('.profile-card-3d');
+        cardParent.addEventListener('mousemove', (e) => {
+            const rect = cardParent.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            tiltCard.style.transform = `rotateY(${x / 12}deg) rotateX(${-y / 12}deg)`;
+        });
+        cardParent.addEventListener('mouseleave', () => {
+            tiltCard.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
+
+        // 5. SCROLLSPY
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 6. TERMINAL SHINOBI CLI
+        const terminalInput = document.getElementById('terminalInput');
+        const terminalBody = document.getElementById('terminalBody');
+
+        const commands = {
+            'help': 'Available commands:\n  - profile   : About Juan José Cáceres Huezo\n  - education : Education and certifications\n  - projects  : Digital projects\n  - skills    : Skills and tools\n  - clear     : Clear the console',
+            'profile': 'Name: Juan José Cáceres Huezo\nInterests: creativity, technology, and digital projects.',
+            'education': '¡SUPÉRATE! ADOC studies: technology, English, and personal development.\nCertifications: MOS Excel and MOS Excel Expert.\nEnglish: intermediate.',
+            'projects': 'PrimerPaso: entry-level job-search prototype.\nTechGuide: camera-based electronic-device recognition.\nSpeedyShop: academic e-commerce project.',
+            'skills': 'Visual creativity, Canva and digital tools, Excel, attention to detail, teamwork, and communication.'
+        };
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim().toLowerCase();
+                const promptLine = document.createElement('div');
+                promptLine.style.color = '#888';
+                promptLine.textContent = `jjcaceres@dev:~$ ${terminalInput.value}`;
+                terminalBody.appendChild(promptLine);
+
+                const outputLine = document.createElement('div');
+                outputLine.className = 'terminal-output';
+
+                if (cmd === 'clear') {
+                    terminalBody.innerHTML = '';
+                } else if (commands[cmd]) {
+                    outputLine.style.color = '#2EE59D';
+                    outputLine.textContent = commands[cmd];
+                    terminalBody.appendChild(outputLine);
+                } else if (cmd !== '') {
+                    outputLine.style.color = '#FF5F56';
+                    outputLine.textContent = `Command not recognized: "${cmd}". Type 'help' to see available commands.`;
+                    terminalBody.appendChild(outputLine);
+                }
+
+                terminalInput.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+
+        // Accessible menu for small screens
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinksContainer = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', String(!isOpen));
+            menuToggle.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+            menuToggle.innerHTML = `<i class="fa-solid fa-${isOpen ? 'bars' : 'xmark'}" aria-hidden="true"></i>`;
+            navLinksContainer.classList.toggle('is-open', !isOpen);
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+                navLinksContainer.classList.remove('is-open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.setAttribute('aria-label', 'Open menu');
+                menuToggle.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+                menuToggle.focus();
+            }
+        });
+        navLinksContainer.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+            navLinksContainer.classList.remove('is-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Open menu');
+            menuToggle.innerHTML = '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
+        }));
+    </script>
+</body>
+</html>
+
